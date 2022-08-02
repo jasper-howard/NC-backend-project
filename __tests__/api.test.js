@@ -48,7 +48,7 @@ describe("4. GET /api/articles/:article_id", () => {
           votes: expect.any(Number),
         };
 
-        expect(body.article[0]).toMatchObject(objOfCorrectShape);
+        expect(body.article).toMatchObject(objOfCorrectShape);
       });
   });
   test("should respond with object specific to specified id", () => {
@@ -65,10 +65,10 @@ describe("4. GET /api/articles/:article_id", () => {
           votes: 100,
         };
 
-        expect(body.article[0]).toMatchObject(objCorrect);
+        expect(body.article).toMatchObject(objCorrect);
       });
   });
-  test("should respond with 400 invalid id when given invalid author_id", () => {
+  test("should respond with 400 invalid id when given invalid article_id", () => {
     return request(app)
       .get("/api/articles/help")
       .expect(400)
@@ -76,7 +76,7 @@ describe("4. GET /api/articles/:article_id", () => {
         expect(body.msg).toBe("invalid id");
       });
   });
-  test("should respond with 404 not found when given valid but non existent author_id", () => {
+  test("should respond with 404 not found when given valid but non existent article_id", () => {
     return request(app)
       .get("/api/articles/100")
       .expect(404)
@@ -119,20 +119,20 @@ describe("5. PATCH /api/articles/:article_id", () => {
         expect(body.msg).toBe("invalid id");
       });
   });
-  test("should respond with 406 not acceptable when sent malformed body - too many fields ", () => {
+  test("should respond with 400 not acceptable when sent malformed body - too many fields ", () => {
     return request(app)
       .patch("/api/articles/1")
       .send({ inc_votes: 50, bad: "string" })
-      .expect(406)
+      .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("bad request");
       });
   });
-  test("should respond with 406 not acceptable when sent malformed body - wrong field ", () => {
+  test("should respond with 400 not acceptable when sent malformed body - wrong field ", () => {
     return request(app)
       .patch("/api/articles/1")
       .send({ inc_otes: 50 })
-      .expect(406)
+      .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("bad request");
       });
