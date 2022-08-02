@@ -35,7 +35,7 @@ describe("4. GET /api/articles/:article_id", () => {
   });
   test("should respond with an article obj with correct properties", () => {
     return request(app)
-      .get("/api/articles/2")
+      .get("/api/articles/1")
       .then(({ body }) => {
         const objOfCorrectShape = {
           author: expect.any(String),
@@ -45,8 +45,8 @@ describe("4. GET /api/articles/:article_id", () => {
           topic: expect.any(String),
           created_at: expect.any(String),
           votes: expect.any(Number),
+          comment_count: expect.any(Number),
         };
-
         expect(body.article).toMatchObject(objOfCorrectShape);
       });
   });
@@ -62,6 +62,7 @@ describe("4. GET /api/articles/:article_id", () => {
           topic: "mitch",
           created_at: "2020-07-09T20:11:00.000Z",
           votes: 100,
+          comment_count: 11,
         };
 
         expect(body.article).toMatchObject(objCorrect);

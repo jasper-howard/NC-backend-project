@@ -8,13 +8,18 @@ exports.selectTopics = async () => {
 
 exports.selectArticleById = async (id) => {
   const { rows: article } = await db.query(
-    `SELECT * FROM articles 
-             WHERE article_id = $1;`,
+    // not nice
+    `SELECT CAST(COUNT(c.comment_id)as int)  as comment_count, a.author,a.title,a.article_id, a.body, a.topic , a.created_at, a.votes 
+    FROM articles AS a
+    LEFT  JOIN comments as c ON c.article_id = a.article_id
+    WHERE a.article_id = $1  
+    GROUP BY a.author,a.title,a.article_id, a.body, a.topic , a.created_at, a.votes;`,
     [id]
   );
   if (article.length === 0) {
     return Promise.reject({ custom: "not found" });
   }
+
   return article;
 };
 
