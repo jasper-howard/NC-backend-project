@@ -22,7 +22,6 @@ describe("3. GET /api/topics", () => {
           slug: expect.any(String),
           description: expect.any(String),
         };
-        // vvvv not sure if silly for larger queries??
         for (let i in body.topics) {
           expect(body.topics[i]).toMatchObject(objOfCorrectShape);
         }
@@ -144,6 +143,28 @@ describe("5. PATCH /api/articles/:article_id", () => {
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe("not found");
+      });
+  });
+});
+
+describe("6. GET /api/users", () => {
+  test("should return status 200", () => {
+    return request(app).get("/api/topics").expect(200);
+  });
+  test("should return array of obj with username, name and avatar_url properties", () => {
+    return request(app)
+      .get("/api/users")
+      .then(({ body }) => {
+        const objOfCorrectShape = {
+          username: expect.any(String),
+          name: expect.any(String),
+          avatar_url: expect.any(String),
+        };
+
+        expect(body.users.length).not.toBe(0);
+        for (let i in body.users) {
+          expect(body.users[i]).toMatchObject(objOfCorrectShape);
+        }
       });
   });
 });

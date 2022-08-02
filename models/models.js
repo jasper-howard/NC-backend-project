@@ -29,3 +29,7 @@ exports.changeVotes = async (v, id) => {
   }
   return article;
 };
+exports.selectAllUsers = async () => {
+  const { rows } = await db.query(`SELECT * FROM users;`);
+  return rows;
+};
