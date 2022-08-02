@@ -40,7 +40,6 @@ exports.updateVotes = (req, res, next) => {
 };
 
 exports.getAllUsers = (req, res, next) => {
-  console.log("con");
   selectAllUsers().then((users) => {
     res.status(200).send({ users: users });
   });
