@@ -171,7 +171,7 @@ describe("6. GET /api/users", () => {
 
 describe.only("6. GET /api/articles", () => {
   test("should return status 200", () => {
-    return request(app).get("/api/topics").expect(200);
+    return request(app).get("/api/articles").expect(200);
   });
   test("should return array of articles with comment count", () => {
     return request(app)
@@ -181,13 +181,11 @@ describe.only("6. GET /api/articles", () => {
           author: expect.any(String),
           title: expect.any(String),
           article_id: expect.any(Number),
-          body: expect.any(String),
           topic: expect.any(String),
           created_at: expect.any(String),
           votes: expect.any(Number),
           comment_count: expect.any(Number),
         };
-        console.log(body.articles);
         expect(body.articles.length).not.toBe(0);
         for (let i in body.articles) {
           expect(body.articles[i]).toMatchObject(objOfCorrectShape);
