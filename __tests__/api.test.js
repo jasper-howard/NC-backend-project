@@ -202,7 +202,7 @@ describe(" GET /api/articles", () => {
   });
 });
 
-describe.only("10. POST /api/articles/:article_id/comments", () => {
+describe("10. POST /api/articles/:article_id/comments", () => {
   test("should return status 201", () => {
     return request(app)
       .post("/api/articles/2/comments")
