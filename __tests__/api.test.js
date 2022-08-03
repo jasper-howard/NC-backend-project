@@ -169,3 +169,55 @@ describe("6. GET /api/users", () => {
       });
   });
 });
+
+describe("9. GET /api/articles/:article_id/comments", () => {
+  test("should return status 200 ", () => {
+    return request(app).get("/api/articles/1/comments").expect(200);
+  });
+  test("should return array of comments in specified shape", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .then(({ body: comments }) => {
+        const objOfCorrectShape = {
+          comment_id: expect.any(Number),
+          votes: expect.any(Number),
+          created_at: expect.any(String),
+          author: expect.any(String),
+          body: expect.any(String),
+        };
+        for (let comment of comments) {
+          expect(comment).toMatchObject(objOfCorrectShape);
+        }
+      });
+  });
+  test("should return specific comments from a specified article", () => {
+    return request(app)
+      .get("/api/articles/6/comments")
+      .then(({ body: comments }) => {
+        const actualComment = {
+          comment_id: 16,
+          votes: 1,
+          created_at: "2020-10-11T15:23:00.000Z",
+          author: "butter_bridge",
+          body: "This is a bad article name",
+        };
+        expect(comments).toEqual([actualComment]);
+      });
+  });
+  test("should respond with 400 invalid id when given invalid article_id", () => {
+    return request(app)
+      .get("/api/articles/help/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("invalid id");
+      });
+  });
+  test("should respond with 404 not found when given valid but non existent article_id", () => {
+    return request(app)
+      .get("/api/articles/100/comments")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("not found");
+      });
+  });
+});

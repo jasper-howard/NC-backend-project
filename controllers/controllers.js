@@ -3,6 +3,7 @@ const {
   selectArticleById,
   changeVotes,
   selectAllUsers,
+  selectCommentsByAId,
 } = require("../models/models");
 
 exports.getTopics = (req, res, next) => {
@@ -44,4 +45,13 @@ exports.getAllUsers = (req, res, next) => {
   selectAllUsers().then((users) => {
     res.status(200).send({ users: users });
   });
+};
+
+exports.getCommentsByAId = (req, res, next) => {
+  const { article_id: id } = req.params;
+  selectCommentsByAId(id)
+    .then((comments) => {
+      res.status(200).send(comments);
+    })
+    .catch((err) => next(err));
 };

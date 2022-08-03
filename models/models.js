@@ -38,3 +38,17 @@ exports.selectAllUsers = async () => {
   const { rows } = await db.query(`SELECT * FROM users;`);
   return rows;
 };
+
+exports.selectCommentsByAId = async (id) => {
+  const { rows } = await db.query(
+    `SELECT comment_id, votes, created_at, body, author
+    FROM comments 
+    WHERE article_id = $1`,
+    [id]
+  );
+  if (!rows.length) {
+    console.log(rows);
+    await checkIfExits("articles", "article_id", id);
+  }
+  return rows;
+};
