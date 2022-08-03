@@ -33,3 +33,15 @@ exports.selectAllUsers = async () => {
   const { rows } = await db.query(`SELECT * FROM users;`);
   return rows;
 };
+
+exports.selectArticles = async () => {
+  const { rows } = await db.query(
+    `SELECT CAST(COUNT(c.comment_id)as int) as comment_count, a.author,a.title,a.article_id, a.body, a.topic , a.created_at, a.votes 
+  FROM articles AS a
+  LEFT  JOIN comments as c ON c.article_id = a.article_id
+  GROUP BY a.author,a.title,a.article_id, a.body, a.topic , a.created_at, a.votes
+  ORDER BY a.created_at DESC;`
+  );
+  console.log(rows);
+  return rows;
+};

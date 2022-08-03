@@ -3,6 +3,7 @@ const {
   selectArticleById,
   changeVotes,
   selectAllUsers,
+  selectArticles,
 } = require("../models/models");
 
 exports.getTopics = (req, res, next) => {
@@ -42,5 +43,12 @@ exports.updateVotes = (req, res, next) => {
 exports.getAllUsers = (req, res, next) => {
   selectAllUsers().then((users) => {
     res.status(200).send({ users: users });
+  });
+};
+
+exports.getAllArticles = (req, res, next) => {
+  console.log("con");
+  selectArticles().then((articles) => {
+    res.status(200).send({ articles: articles });
   });
 };
