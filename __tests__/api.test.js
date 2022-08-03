@@ -68,6 +68,24 @@ describe("4. GET /api/articles/:article_id", () => {
         expect(body.article).toMatchObject(objCorrect);
       });
   });
+  test("should respond with object when obj with 0 comments if article has 0 comments", () => {
+    return request(app)
+      .get("/api/articles/2")
+      .then(({ body }) => {
+        const objCorrect = {
+          author: expect.any(String),
+          title: expect.any(String),
+          article_id: 2,
+          body: expect.any(String),
+          topic: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number),
+          comment_count: 0,
+        };
+
+        expect(body.article).toMatchObject(objCorrect);
+      });
+  });
   test("should respond with 400 invalid id when given invalid article_id", () => {
     return request(app)
       .get("/api/articles/help")
