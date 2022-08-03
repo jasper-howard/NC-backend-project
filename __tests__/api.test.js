@@ -169,7 +169,7 @@ describe("6. GET /api/users", () => {
   });
 });
 
-describe.only("6. GET /api/articles", () => {
+describe("6. GET /api/articles", () => {
   test("should return status 200", () => {
     return request(app).get("/api/articles").expect(200);
   });
