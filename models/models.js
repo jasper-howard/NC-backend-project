@@ -47,7 +47,6 @@ exports.selectCommentsByAId = async (id) => {
     [id]
   );
   if (!rows.length) {
-    console.log(rows);
     await checkIfExits("articles", "article_id", id);
   }
   return rows;
