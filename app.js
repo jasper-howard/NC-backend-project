@@ -30,6 +30,12 @@ app.use((err, req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+  if (err.code === "42601" || err.custom === "bad query") {
+    res.status(400).send({ msg: "bad query" });
+  } else next(err);
+});
+
+app.use((err, req, res, next) => {
   if (err.custom === "not found") {
     res.status(404).send({ msg: "not found" });
   } else next(err);

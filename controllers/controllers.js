@@ -48,7 +48,15 @@ exports.getAllUsers = (req, res, next) => {
 };
 
 exports.getAllArticles = (req, res, next) => {
-  selectArticles().then((articles) => {
-    res.status(200).send({ articles: articles });
-  });
+  const { sort_by } = req.query;
+  const { order } = req.query;
+  const { topic } = req.query;
+
+  selectArticles(sort_by, order, topic)
+    .then((articles) => {
+      res.status(200).send({ articles: articles });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };

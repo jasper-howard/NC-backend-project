@@ -201,3 +201,67 @@ describe("6. GET /api/articles", () => {
       });
   });
 });
+
+describe("11. GET /api/articles queries= sort_by", () => {
+  test("should return status 200", () => {
+    return request(app).get("/api/articles?sort_by=article_id").expect(200);
+  });
+  test("should return articles sorted by article_id when passed article id as query", () => {
+    return request(app)
+      .get("/api/articles?sort_by=article_id")
+      .then(({ body: { articles } }) => {
+        expect(articles).toBeSortedBy("article_id", { descending: true });
+      });
+  });
+  test("should return articles sorted by ascending order when given ASC in query", () => {
+    return request(app)
+      .get("/api/articles?order=ASC")
+      .then(({ body: { articles } }) => {
+        expect(articles).toBeSortedBy("created_at");
+      });
+  });
+  test("should return articles of given topic when queried", () => {
+    return request(app)
+      .get("/api/articles?topic=cats")
+      .then(({ body: { articles } }) => {
+        expect(articles).toBeSortedBy("created_at");
+        articles.forEach((x) => {
+          expect(x.topic).toBe("cats");
+        });
+      });
+  });
+  test("should return articles when given complex query", () => {
+    return request(app)
+      .get("/api/articles?topic=cats&order=ASC&sort_by=title")
+      .then(({ body: { articles } }) => {
+        expect(articles).toBeSortedBy("title", { descending: true });
+        articles.forEach((x) => {
+          expect(x.topic).toBe("cats");
+        });
+      });
+  });
+  test("should return status 400 bad request went sent malformed topic query", () => {
+    return request(app)
+      .get("/api/articles?topic=cat&order=ASC&sort_by=title")
+      .expect(400) // could be 404
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad query");
+      });
+  });
+  test("should return status 400 bad request went sent malformed order query", () => {
+    return request(app)
+      .get("/api/articles?topic=cats&order=NOO&sort_by=title")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad query");
+      });
+  });
+  test("should return status 400 bad request went sent malformed order query", () => {
+    return request(app)
+      .get("/api/articles?topic=cats&order=ASC&sort_by=itle")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad query");
+      });
+  });
+});
