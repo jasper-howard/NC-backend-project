@@ -296,4 +296,12 @@ describe.only("12. DELETE /api/comments/:comment_id", () => {
         expect(msg).toBe("not found");
       });
   });
+  test("should return status 400 when given invalid comment id ", () => {
+    return request(app)
+      .delete("/api/comments/help")
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("invalid id");
+      });
+  });
 });
