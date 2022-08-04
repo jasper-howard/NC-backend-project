@@ -39,6 +39,49 @@ exports.selectAllUsers = async () => {
   return rows;
 };
 
+exports.selectArticles = async (
+  sort_by = "created_at",
+  order = "DESC",
+  topic = "*"
+) => {
+  const niceSortBys = [
+    "article_id",
+    "author",
+    "topic",
+    "comment_count",
+    "created_at",
+    "votes",
+    "title",
+  ];
+
+  const topics = await this.selectTopics();
+  // console.log(topics);
+  niceTopics = topics.map((element) => element.slug);
+  niceTopics.push("*");
+  const niceOrder = ["DESC", "ASC"];
+  // const niceTopics = ["mitch", "cats", "paper", "*"]; ///will have to be changed as topic added
+  if (
+    !niceSortBys.includes(sort_by) ||
+    !niceOrder.includes(order) ||
+    !niceTopics.includes(topic)
+  ) {
+    return Promise.reject({ status: 400, msg: "bad query" });
+  } else {
+    let where = `WHERE a.topic = '${topic}'`;
+    if (topic === "*") {
+      where = `WHERE a.topic = ANY (SELECT topic FROM topics)`;
+    }
+
+    const { rows } = await db.query(
+      `SELECT CAST(COUNT(c.comment_id)as int) as comment_count, a.author,a.title,a.article_id, a.topic , a.created_at, a.votes, a.body
+    FROM articles AS a
+    LEFT  JOIN comments as c ON c.article_id = a.article_id
+    ${where}
+    GROUP BY a.article_id 
+    ORDER BY a.${sort_by} ${order};`
+    );
+    return rows;
+  }
 exports.selectCommentsByAId = async (id) => {
   const { rows } = await db.query(
     `SELECT comment_id, votes, created_at, body, author

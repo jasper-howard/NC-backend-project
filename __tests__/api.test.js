@@ -368,3 +368,92 @@ describe("10. POST /api/articles/:article_id/comments", () => {
       });
   });
 });
+
+describe("11. GET /api/articles queries", () => {
+  test("should return status 200", () => {
+    return request(app)
+      .get("/api/articles?sort_by=article_id")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        const objOfCorrectShape = {
+          author: expect.any(String),
+          title: expect.any(String),
+          article_id: expect.any(Number),
+          body: expect.any(String),
+          topic: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number),
+          comment_count: expect.any(Number),
+        };
+        articles.forEach((article) => {
+          expect(article).toMatchObject(objOfCorrectShape);
+        });
+      });
+  });
+  test("should return articles sorted by a given when queried ", () => {
+    return request(app)
+      .get("/api/articles?sort_by=article_id")
+      .then(({ body: { articles } }) => {
+        expect(articles).toBeSortedBy("article_id", { descending: true });
+      });
+  });
+  test("should return articles sorted by ascending order when given ASC in query", () => {
+    return request(app)
+      .get("/api/articles?order=ASC")
+      .then(({ body: { articles } }) => {
+        expect(articles).toBeSortedBy("created_at");
+      });
+  });
+  test("should return articles of given topic when queried", () => {
+    return request(app)
+      .get("/api/articles?topic=cats")
+      .then(({ body: { articles } }) => {
+        expect(articles).toBeSortedBy("created_at");
+        articles.forEach((article) => {
+          expect(article.topic).toBe("cats");
+        });
+      });
+  });
+  test("should return articles when given complex query", () => {
+    return request(app)
+      .get("/api/articles?topic=cats&order=ASC&sort_by=title")
+      .then(({ body: { articles } }) => {
+        expect(articles).toBeSortedBy("title", { descending: true });
+        articles.forEach((x) => {
+          expect(x.topic).toBe("cats");
+        });
+      });
+  });
+  test("should return status 200 and empty array when queried with topic that has not articles", () => {
+    return request(app)
+      .get("/api/articles?topic=paper&order=ASC&sort_by=title")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toEqual([]);
+      });
+  });
+  test("should return status 400 bad request went sent malformed topic query", () => {
+    return request(app)
+      .get("/api/articles?topic=cat&order=ASC&sort_by=title")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad query");
+      });
+  });
+  test("should return status 400 bad request went sent malformed order query", () => {
+    return request(app)
+      .get("/api/articles?topic=cats&order=NOO&sort_by=title")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad query");
+      });
+  });
+  test("should return status 400 bad request went sent malformed order query", () => {
+    return request(app)
+      .get("/api/articles?topic=cats&order=ASC&sort_by=itle")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad query");
+      });
+  });
+});
