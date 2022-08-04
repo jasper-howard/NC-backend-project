@@ -202,11 +202,28 @@ describe("6. GET /api/articles", () => {
   });
 });
 
-describe("11. GET /api/articles queries", () => {
+describe.only("11. GET /api/articles queries", () => {
   test("should return status 200", () => {
-    return request(app).get("/api/articles?sort_by=article_id").expect(200);
+    return request(app)
+      .get("/api/articles?sort_by=article_id")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        const objOfCorrectShape = {
+          author: expect.any(String),
+          title: expect.any(String),
+          article_id: expect.any(Number),
+          body: expect.any(String),
+          topic: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number),
+          comment_count: expect.any(Number),
+        };
+        articles.forEach((article) => {
+          expect(article).toMatchObject(objOfCorrectShape);
+        });
+      });
   });
-  test("should return articles sorted by article_id when passed article id as query", () => {
+  test("should return articles sorted by a given when queried ", () => {
     return request(app)
       .get("/api/articles?sort_by=article_id")
       .then(({ body: { articles } }) => {
@@ -225,8 +242,8 @@ describe("11. GET /api/articles queries", () => {
       .get("/api/articles?topic=cats")
       .then(({ body: { articles } }) => {
         expect(articles).toBeSortedBy("created_at");
-        articles.forEach((x) => {
-          expect(x.topic).toBe("cats");
+        articles.forEach((article) => {
+          expect(article.topic).toBe("cats");
         });
       });
   });
@@ -238,6 +255,14 @@ describe("11. GET /api/articles queries", () => {
         articles.forEach((x) => {
           expect(x.topic).toBe("cats");
         });
+      });
+  });
+  test("should return status 200 and empty array when queried with topic that has not articles", () => {
+    return request(app)
+      .get("/api/articles?topic=paper&order=ASC&sort_by=title")
+      .expect(200) // could be 404
+      .then(({ body: { articles } }) => {
+        expect(articles).toEqual([]);
       });
   });
   test("should return status 400 bad request went sent malformed topic query", () => {
