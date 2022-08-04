@@ -3,6 +3,7 @@ const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data/index");
 const app = require("../app");
 const db = require("../db/connection");
+const { checkIfExits } = require("../models/utils");
 
 afterAll(() => {
   if (db.end) db.end();
@@ -284,6 +285,25 @@ describe("6. GET /api/articles", () => {
       });
   });
 });
+
+describe("12. DELETE /api/comments/:comment_id", () => {
+  test("should return status 204 ", () => {
+    return request(app).delete("/api/comments/1").expect(204);
+  });
+  test("should return status 404 when comment doesn't exist ", () => {
+    return request(app)
+      .delete("/api/comments/100")
+      .expect(404)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("not found");
+      });
+  });
+  test("should return status 400 when given invalid comment id ", () => {
+    return request(app)
+      .delete("/api/comments/help")
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("invalid id");
 
 describe("10. POST /api/articles/:article_id/comments", () => {
   test("should return status 201", () => {

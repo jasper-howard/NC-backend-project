@@ -5,6 +5,7 @@ const {
   selectAllUsers,
   selectCommentsByAId,
   selectArticles,
+  removeComment,
   addComment,
 } = require("../models/models");
 
@@ -63,6 +64,20 @@ exports.getAllArticles = (req, res, next) => {
   });
 };
 
+exports.deleteComment = (req, res, next) => {
+  const { comment_id: id } = req.params;
+
+  removeComment(id)
+    .then((result) => {
+      if (result.length < 1) {
+        return Promise.reject({ status: 404, msg: "not found" });
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch((err) => {
+      next(err);
+    });
 exports.postComments = (req, res, next) => {
   const { username: name } = req.body;
   const { body: body } = req.body;
