@@ -189,8 +189,6 @@ describe("6. GET /api/users", () => {
   });
 });
 
-
-
 describe("9. GET /api/articles/:article_id/comments", () => {
   test("should return status 200 ", () => {
     return request(app).get("/api/articles/1/comments").expect(200);
@@ -304,6 +302,9 @@ describe("12. DELETE /api/comments/:comment_id", () => {
       .expect(400)
       .then(({ body: { msg } }) => {
         expect(msg).toBe("invalid id");
+      });
+  });
+});
 
 describe("10. POST /api/articles/:article_id/comments", () => {
   test("should return status 201", () => {

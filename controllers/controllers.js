@@ -78,6 +78,7 @@ exports.deleteComment = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
+};
 exports.postComments = (req, res, next) => {
   const { username: name } = req.body;
   const { body: body } = req.body;

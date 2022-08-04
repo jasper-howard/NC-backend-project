@@ -68,7 +68,7 @@ exports.removeComment = async (id) => {
     [id]
   );
   return rows;
-  })
+};
 exports.addComment = async (name, body, id) => {
   await checkIfExits("articles", "article_id", id);
 
