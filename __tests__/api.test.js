@@ -202,7 +202,7 @@ describe("6. GET /api/articles", () => {
   });
 });
 
-describe.only("11. GET /api/articles queries", () => {
+describe("11. GET /api/articles queries", () => {
   test("should return status 200", () => {
     return request(app)
       .get("/api/articles?sort_by=article_id")
@@ -260,7 +260,7 @@ describe.only("11. GET /api/articles queries", () => {
   test("should return status 200 and empty array when queried with topic that has not articles", () => {
     return request(app)
       .get("/api/articles?topic=paper&order=ASC&sort_by=title")
-      .expect(200) // could be 404
+      .expect(200)
       .then(({ body: { articles } }) => {
         expect(articles).toEqual([]);
       });
@@ -268,7 +268,7 @@ describe.only("11. GET /api/articles queries", () => {
   test("should return status 400 bad request went sent malformed topic query", () => {
     return request(app)
       .get("/api/articles?topic=cat&order=ASC&sort_by=title")
-      .expect(400) // could be 404
+      .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("bad query");
       });

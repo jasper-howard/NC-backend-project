@@ -60,7 +60,7 @@ exports.selectArticles = async (
     !niceOrder.includes(order) ||
     !niceTopics.includes(topic)
   ) {
-    return Promise.reject({ custom: "bad query" });
+    return Promise.reject({ status: 400, msg: "bad query" });
   } else {
     let where = `WHERE a.topic = '${topic}'`;
     if (topic === "*") {
