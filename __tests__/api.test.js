@@ -282,3 +282,17 @@ describe("6. GET /api/articles", () => {
       });
   });
 });
+
+describe.only("12. DELETE /api/comments/:comment_id", () => {
+  test.only("should return status 204 ", () => {
+    return request(app).delete("/api/comments/1").expect(204);
+  });
+  // test.only("should delete comment of specified id", () => {
+  //   const res = await selectArticleById(1)
+  //   const numOfComments = res.comment_count;
+  //   console.log(res);
+  //   return request(app)
+  //     .delete("/api/comments/1")
+  //     .then(() => {});
+  // });
+});

@@ -61,3 +61,5 @@ exports.selectArticles = async () => {
   );
   return rows;
 };
+
+exports.removeComment = async (id) => {};

@@ -5,6 +5,7 @@ const {
   selectAllUsers,
   selectCommentsByAId,
   selectArticles,
+  removeComment,
 } = require("../models/models");
 
 exports.getTopics = (req, res, next) => {
@@ -59,5 +60,12 @@ exports.getCommentsByAId = (req, res, next) => {
 exports.getAllArticles = (req, res, next) => {
   selectArticles().then((articles) => {
     res.status(200).send({ articles: articles });
+  });
+};
+
+exports.deleteComment = (req, res, next) => {
+  //params stuff
+  removeComment().then(() => {
+    res.sendStatus(204);
   });
 };
