@@ -202,7 +202,7 @@ describe("6. GET /api/articles", () => {
   });
 });
 
-describe("11. GET /api/articles queries= sort_by", () => {
+describe("11. GET /api/articles queries", () => {
   test("should return status 200", () => {
     return request(app).get("/api/articles?sort_by=article_id").expect(200);
   });
