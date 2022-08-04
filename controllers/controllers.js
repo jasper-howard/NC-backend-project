@@ -3,6 +3,7 @@ const {
   selectArticleById,
   changeVotes,
   selectAllUsers,
+  selectCommentsByAId,
   selectArticles,
   addComment,
 } = require("../models/models");
@@ -48,6 +49,14 @@ exports.getAllUsers = (req, res, next) => {
   });
 };
 
+exports.getCommentsByAId = (req, res, next) => {
+  const { article_id: id } = req.params;
+  selectCommentsByAId(id)
+    .then((comments) => {
+      res.status(200).send(comments);
+    })
+    .catch((err) => next(err));
+};
 exports.getAllArticles = (req, res, next) => {
   selectArticles().then((articles) => {
     res.status(200).send({ articles: articles });
