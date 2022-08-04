@@ -284,7 +284,7 @@ describe("6. GET /api/articles", () => {
   });
 });
 
-describe.only("12. DELETE /api/comments/:comment_id", () => {
+describe("12. DELETE /api/comments/:comment_id", () => {
   test("should return status 204 ", () => {
     return request(app).delete("/api/comments/1").expect(204);
   });
