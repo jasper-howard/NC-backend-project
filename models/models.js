@@ -53,8 +53,13 @@ exports.selectArticles = async (
     "votes",
     "title",
   ];
+
+  const topics = await this.selectTopics();
+  // console.log(topics);
+  niceTopics = topics.map((element) => element.slug);
+  niceTopics.push("*");
   const niceOrder = ["DESC", "ASC"];
-  const niceTopics = ["mitch", "cats", "paper", "*"]; ///will have to be changed as topic added
+  // const niceTopics = ["mitch", "cats", "paper", "*"]; ///will have to be changed as topic added
   if (
     !niceSortBys.includes(sort_by) ||
     !niceOrder.includes(order) ||
