@@ -55,8 +55,7 @@ exports.selectArticles = async (
   ];
 
   const topics = await this.selectTopics();
-  // console.log(topics);
-  niceTopics = topics.map((element) => element.slug);
+  const niceTopics = topics.map((element) => element.slug);
   niceTopics.push("*");
   const niceOrder = ["DESC", "ASC"];
   // const niceTopics = ["mitch", "cats", "paper", "*"]; ///will have to be changed as topic added
@@ -73,7 +72,7 @@ exports.selectArticles = async (
     }
 
     const { rows } = await db.query(
-      `SELECT CAST(COUNT(c.comment_id)as int) as comment_count, a.author,a.title,a.article_id, a.topic , a.created_at, a.votes, a.body
+      `SELECT CAST(COUNT(c.comment_id)as int) as comment_count,a.body, a.author,a.title,a.article_id, a.topic , a.created_at, a.votes
     FROM articles AS a
     LEFT  JOIN comments as c ON c.article_id = a.article_id
     ${where}
@@ -82,6 +81,8 @@ exports.selectArticles = async (
     );
     return rows;
   }
+};
+
 exports.selectCommentsByAId = async (id) => {
   const { rows } = await db.query(
     `SELECT comment_id, votes, created_at, body, author
@@ -92,16 +93,6 @@ exports.selectCommentsByAId = async (id) => {
   if (!rows.length) {
     await checkIfExits("articles", "article_id", id);
   }
-  return rows;
-};
-exports.selectArticles = async () => {
-  const { rows } = await db.query(
-    `SELECT CAST(COUNT(c.comment_id)as int) as comment_count, a.author,a.title,a.article_id, a.topic , a.created_at, a.votes 
-  FROM articles AS a
-  LEFT  JOIN comments as c ON c.article_id = a.article_id
-  GROUP BY a.author,a.title,a.article_id, a.topic , a.created_at, a.votes
-  ORDER BY a.created_at DESC;`
-  );
   return rows;
 };
 

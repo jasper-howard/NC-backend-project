@@ -62,7 +62,6 @@ exports.getAllArticles = (req, res, next) => {
   const { sort_by } = req.query;
   const { order } = req.query;
   const { topic } = req.query;
-
   selectArticles(sort_by, order, topic)
     .then((articles) => {
       res.status(200).send({ articles: articles });
@@ -91,7 +90,6 @@ exports.postComments = (req, res, next) => {
   const { username: name } = req.body;
   const { body: body } = req.body;
   const { article_id: id } = req.params;
-  //// add way to check if ^^^ these exits probs ref array and includes
   const bodyKeys = Object.keys(req.body);
 
   if (bodyKeys.includes("username") && bodyKeys.includes("body")) {
@@ -100,7 +98,6 @@ exports.postComments = (req, res, next) => {
         res.status(201).send({ comment: comment });
       })
       .catch((err) => {
-        // console.log(err);
         next(err);
       });
   } else {
