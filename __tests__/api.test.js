@@ -208,6 +208,7 @@ describe("9. GET /api/articles/:article_id/comments", () => {
         }
       });
   });
+
   test("should return specific comments from a specified article", () => {
     return request(app)
       .get("/api/articles/6/comments")
@@ -244,7 +245,10 @@ describe("9. GET /api/articles/:article_id/comments", () => {
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe("not found");
-        
+      });
+  });
+});
+
 describe("6. GET /api/articles", () => {
   test("should return status 200", () => {
     return request(app).get("/api/articles").expect(200);
@@ -272,7 +276,9 @@ describe("6. GET /api/articles", () => {
     return request(app)
       .get("/api/articles")
       .then(({ body }) => {
-        expect(body.articles).toBeSortedBy("created_at", { descending: true });
+        expect(body.articles).toBeSortedBy("created_at", {
+          descending: true,
+        });
       });
   });
 });

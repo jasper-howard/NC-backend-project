@@ -49,6 +49,8 @@ exports.selectCommentsByAId = async (id) => {
   if (!rows.length) {
     await checkIfExits("articles", "article_id", id);
   }
+  return rows;
+};
 exports.selectArticles = async () => {
   const { rows } = await db.query(
     `SELECT CAST(COUNT(c.comment_id)as int) as comment_count, a.author,a.title,a.article_id, a.topic , a.created_at, a.votes 
