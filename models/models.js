@@ -62,4 +62,10 @@ exports.selectArticles = async () => {
   return rows;
 };
 
-exports.removeComment = async (id) => {};
+exports.removeComment = async (id) => {
+  const { rows } = await db.query(
+    `DELETE FROM comments WHERE comment_id = $1 RETURNING *;`,
+    [id]
+  );
+  return rows;
+};

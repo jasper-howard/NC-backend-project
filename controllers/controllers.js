@@ -64,8 +64,17 @@ exports.getAllArticles = (req, res, next) => {
 };
 
 exports.deleteComment = (req, res, next) => {
-  //params stuff
-  removeComment().then(() => {
-    res.sendStatus(204);
-  });
+  const { comment_id: id } = req.params;
+
+  removeComment(id)
+    .then((result) => {
+      if (result.length < 1) {
+        return Promise.reject({ status: 404, msg: "not found" });
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
