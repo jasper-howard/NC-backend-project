@@ -6,6 +6,7 @@ const {
   selectCommentsByAId,
   selectArticles,
   removeComment,
+  addComment,
 } = require("../models/models");
 
 exports.getTopics = (req, res, next) => {
@@ -77,4 +78,23 @@ exports.deleteComment = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
+exports.postComments = (req, res, next) => {
+  const { username: name } = req.body;
+  const { body: body } = req.body;
+  const { article_id: id } = req.params;
+  //// add way to check if ^^^ these exits probs ref array and includes
+  const bodyKeys = Object.keys(req.body);
+
+  if (bodyKeys.includes("username") && bodyKeys.includes("body")) {
+    addComment(name, body, id)
+      .then(([comment]) => {
+        res.status(201).send({ comment: comment });
+      })
+      .catch((err) => {
+        // console.log(err);
+        next(err);
+      });
+  } else {
+    res.status(400).send({ msg: "bad request" });
+  }
 };

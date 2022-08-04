@@ -7,6 +7,7 @@ const {
   getCommentsByAId,
   getAllArticles,
   deleteComment,
+  postComments,
 } = require("./controllers/controllers");
 
 const app = express();
@@ -25,6 +26,7 @@ app.get("/api/articles/:article_id/comments", getCommentsByAId);
 app.get("/api/articles", getAllArticles);
 
 app.delete("/api/comments/:comment_id", deleteComment);
+app.post("/api/articles/:article_id/comments", postComments);
 
 /////////
 
