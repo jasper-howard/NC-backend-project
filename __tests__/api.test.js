@@ -188,6 +188,8 @@ describe("6. GET /api/users", () => {
   });
 });
 
+
+
 describe("9. GET /api/articles/:article_id/comments", () => {
   test("should return status 200 ", () => {
     return request(app).get("/api/articles/1/comments").expect(200);
@@ -279,6 +281,69 @@ describe("6. GET /api/articles", () => {
         expect(body.articles).toBeSortedBy("created_at", {
           descending: true,
         });
+      });
+  });
+});
+
+describe("10. POST /api/articles/:article_id/comments", () => {
+  test("should return status 201", () => {
+    return request(app)
+      .post("/api/articles/2/comments")
+      .send({ username: "butter_bridge", body: "wow" })
+      .expect(201);
+  });
+  test("should return posted comment", () => {
+    return request(app)
+      .post("/api/articles/2/comments")
+      .send({ username: "butter_bridge", body: "wow" })
+      .then(({ body: { comment } }) => {
+        const expected = {
+          comment_id: 19,
+          body: "wow",
+          article_id: 2,
+          author: "butter_bridge",
+          votes: 0,
+          created_at: expect.any(String),
+        };
+        expect(comment).toEqual(expected);
+      });
+  });
+
+  test("should respond with 400 invalid id when given invalid article_id", () => {
+    return request(app)
+      .post("/api/articles/help/comments")
+      .send({ username: "butter_bridge", body: "wow" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("invalid id");
+      });
+  });
+
+  test("should respond with 400 not acceptable when sent malformed body - wrong field ", () => {
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send({ usernam: "butter_bridge", body: "wow" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("should respond with 400 not acceptable when sent malformed body - wrong input type", () => {
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send({ usernam: "butter_bridge", body: 999 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("should respond with 404 not found when given valid but non existent author_id", () => {
+    return request(app)
+      .post("/api/articles/100/comments")
+      .send({ username: "butter_bridge", body: "wow" })
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("not found");
       });
   });
 });
