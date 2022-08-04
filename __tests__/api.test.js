@@ -222,6 +222,14 @@ describe("9. GET /api/articles/:article_id/comments", () => {
         expect(comments).toEqual([actualComment]);
       });
   });
+  test("should return empty array when article has no comments", () => {
+    return request(app)
+      .get("/api/articles/2/comments")
+      .expect(200)
+      .then(({ body: comments }) => {
+        expect(comments).toEqual([]);
+      });
+  });
   test("should respond with 400 invalid id when given invalid article_id", () => {
     return request(app)
       .get("/api/articles/help/comments")
