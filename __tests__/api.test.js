@@ -390,7 +390,7 @@ describe("11. GET /api/articles queries", () => {
         });
       });
   });
-  test("should return articles sorted by a given when queried ", () => {
+  test("should return articles sorted by a given column when queried ", () => {
     return request(app)
       .get("/api/articles?sort_by=article_id")
       .then(({ body: { articles } }) => {
@@ -419,8 +419,8 @@ describe("11. GET /api/articles queries", () => {
       .get("/api/articles?topic=cats&order=ASC&sort_by=title")
       .then(({ body: { articles } }) => {
         expect(articles).toBeSortedBy("title", { descending: true });
-        articles.forEach((x) => {
-          expect(x.topic).toBe("cats");
+        articles.forEach((article) => {
+          expect(article.topic).toBe("cats");
         });
       });
   });
