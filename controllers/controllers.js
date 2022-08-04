@@ -4,6 +4,7 @@ const {
   changeVotes,
   selectAllUsers,
   selectCommentsByAId,
+  selectArticles,
 } = require("../models/models");
 
 exports.getTopics = (req, res, next) => {
@@ -54,4 +55,8 @@ exports.getCommentsByAId = (req, res, next) => {
       res.status(200).send(comments);
     })
     .catch((err) => next(err));
+exports.getAllArticles = (req, res, next) => {
+  selectArticles().then((articles) => {
+    res.status(200).send({ articles: articles });
+  });
 };
