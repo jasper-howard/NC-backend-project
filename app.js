@@ -32,13 +32,13 @@ app.delete("/api/comments/:comment_id", deleteComment);
 app.post("/api/articles/:article_id/comments", postComments);
 
 app.get("/api/face", (req, res, next) => {
-  res.status(200).send(`     _.-'''''-._
-.'  _     _  '.
-/   (o)   (o)   \\
-|                 |
-|  \\           /  |
-\\  '.       .'  /
-'.  \`'---'\`  .'
+  res.status(200).send(`     _.-'''''-._ \n
+.'  _     _  '.\n
+/   (o)   (o)   \\ \n
+|                 | \n
+|  \\           /  | \n 
+\\  '.       .'  / \n
+'.  \`'---'\`  .' \n
 jgs   '-._____.-'`);
 });
 
