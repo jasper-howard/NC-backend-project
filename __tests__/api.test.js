@@ -457,3 +457,128 @@ describe("11. GET /api/articles queries", () => {
       });
   });
 });
+
+describe("GET /api", () => {
+  test("status 200", () => {
+    return request(app).get("/api").expect(200);
+  });
+  test("should return contents of endpoints.json file as string", () => {
+    return request(app)
+      .get("/api")
+      .then(({ body: { endpoints } }) => {
+        const actualEndpoints = {
+          "GET /api": {
+            description:
+              "serves up a json representation of all the available endpoints of the api",
+          },
+          "GET /api/topics": {
+            description: "serves an array of all topics",
+            queries: [],
+            exampleResponse: {
+              topics: [{ slug: "football", description: "Footie!" }],
+            },
+          },
+          "/api/users": {
+            description: "serves an array of all users",
+            queries: [],
+            exampleResponse: {
+              users: [
+                {
+                  username: "butter_bridge",
+                  name: "jonny",
+                  avatar_url:
+                    "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+                },
+              ],
+            },
+          },
+          "GET /api/articles": {
+            description: "serves an array of all topics",
+            queries: ["topic", "sort_by", "order"],
+            exampleResponse: {
+              articles: [
+                {
+                  title: "Seafood substitutions are increasing",
+                  topic: "cooking",
+                  author: "weegembump",
+                  body: "Text from the article..",
+                  created_at: 1527695953341,
+                },
+              ],
+            },
+          },
+          "GET /api/articles/:article_id": {
+            description: "serves an article with specified article_id ",
+            queries: [],
+            exampleResponse: {
+              article: {
+                comment_count: 11,
+                author: "butter_bridge",
+                title: "Living in the shadow of a great man",
+                article_id: 1,
+                body: "I find this existence challenging",
+                topic: "mitch",
+                created_at: "2020-07-09T20:11:00.000Z",
+                votes: 100,
+              },
+            },
+          },
+          "GET /api/articles/:article_id/comments": {
+            description:
+              "serves an array of the comment for a specific article by article_id",
+            queries: [],
+            exampleResponse: {
+              comments: [
+                {
+                  comment_id: 2,
+                  votes: 14,
+                  created_at: "2020-10-31T03:03:00.000Z",
+                  body: "The beautiful thing about treasure is that it exists. Got to find out what kind of sheets these are; not cotton, not rayon, silky.",
+                  author: "butter_bridge",
+                },
+              ],
+            },
+          },
+          "PATCH /api/articles/:article_id": {
+            description:
+              "increments votes property for a given article by id and serves the updated article",
+            queries: [],
+            "example body": { inc_votes: 50 },
+            exampleResponse: {
+              article: {
+                comment_count: 11,
+                author: "butter_bridge",
+                title: "Living in the shadow of a great man",
+                article_id: 1,
+                body: "I find this existence challenging",
+                topic: "mitch",
+                created_at: "2020-07-09T20:11:00.000Z",
+                votes: 150,
+              },
+            },
+          },
+          "POST /api/articles/:article_id/comments": {
+            description:
+              "post a comment to an article of given article_id and serves the new comment",
+            queries: [],
+            "example body": { username: "butter_bridge", body: "comment" },
+            exampleResponse: {
+              comment: {
+                comment_id: 19,
+                body: "comment",
+                article_id: 2,
+                author: "butter_bridge",
+                votes: 0,
+                created_at: "2022-08-05T08:40:49.325Z",
+              },
+            },
+          },
+          "DELETE /api/comments/:comment_id": {
+            description: "deletes a comment given comment_id",
+            queries: [],
+          },
+        };
+        expect(endpoints).toMatchObject(actualEndpoints);
+      });
+  });
+});

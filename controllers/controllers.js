@@ -7,6 +7,7 @@ const {
   selectArticles,
   removeComment,
   addComment,
+  selectEndpoints,
 } = require("../models/models");
 
 exports.getTopics = (req, res, next) => {
@@ -103,4 +104,10 @@ exports.postComments = (req, res, next) => {
   } else {
     res.status(400).send({ msg: "bad request" });
   }
+};
+
+exports.getEndpoints = (req, res, next) => {
+  selectEndpoints().then((endpoints) => {
+    res.status(200).send({ endpoints: endpoints });
+  });
 };
