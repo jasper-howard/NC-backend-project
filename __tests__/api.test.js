@@ -502,7 +502,7 @@ describe("GET /api", () => {
                   topic: "cooking",
                   author: "weegembump",
                   body: "Text from the article..",
-                  created_at: 1527695953341,
+                  created_at: "2020-07-09T20:11:00.000Z",
                 },
               ],
             },
