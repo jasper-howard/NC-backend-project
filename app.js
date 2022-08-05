@@ -31,6 +31,17 @@ app.get("/api/articles", getAllArticles);
 app.delete("/api/comments/:comment_id", deleteComment);
 app.post("/api/articles/:article_id/comments", postComments);
 
+app.get("/api/face", (req, res, next) => {
+  res.status(200).send(`     _.-'''''-._
+.'  _     _  '.
+/   (o)   (o)   \\
+|                 |
+|  \\           /  |
+\\  '.       .'  /
+'.  \`'---'\`  .'
+jgs   '-._____.-'`);
+});
+
 /////////
 
 app.use((err, req, res, next) => {
