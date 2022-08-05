@@ -53,7 +53,7 @@ app.use((err, req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  console.log("in custom error bit");
+  console.log("custom error");
   if (err.status && err.msg) {
     res.status(err.status).send({ msg: err.msg });
   } else next(err);

@@ -84,15 +84,15 @@ exports.selectArticles = async (
 };
 
 exports.selectCommentsByAId = async (id) => {
+  await checkIfExits("articles", "article_id", id);
+
   const { rows } = await db.query(
     `SELECT comment_id, votes, created_at, body, author
     FROM comments 
     WHERE article_id = $1`,
     [id]
   );
-  if (!rows.length) {
-    await checkIfExits("articles", "article_id", id);
-  }
+
   return rows;
 };
 
