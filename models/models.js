@@ -1,5 +1,6 @@
 const db = require("../db/connection");
 const { checkIfExits } = require("./utils");
+const fs = require("fs/promises");
 
 exports.selectTopics = async () => {
   const { rows } = await db.query(`SELECT * FROM topics;`);
@@ -115,4 +116,10 @@ exports.addComment = async (name, body, id) => {
   );
 
   return rows;
+};
+
+exports.selectEndpoints = async () => {
+  return fs
+    .readFile(`${__dirname}/../endpoints.json`)
+    .then((data) => JSON.parse(data));
 };

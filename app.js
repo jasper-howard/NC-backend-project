@@ -8,11 +8,13 @@ const {
   getAllArticles,
   deleteComment,
   postComments,
+  getEndpoints,
 } = require("./controllers/controllers");
 
 const app = express();
-
 app.use(express.json());
+
+app.get("/api", getEndpoints);
 
 app.get("/api/topics", getTopics);
 
