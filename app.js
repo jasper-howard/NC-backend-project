@@ -29,18 +29,8 @@ app.get("/api/articles/:article_id/comments", getCommentsByAId);
 app.get("/api/articles", getAllArticles);
 
 app.delete("/api/comments/:comment_id", deleteComment);
-app.post("/api/articles/:article_id/comments", postComments);
 
-app.get("/api/face", (req, res, next) => {
-  res.status(200).send(`     _.-'''''-._ \n
-.'  _     _  '.\br
-/   (o)   (o)   \\ \n
-|                 | \n
-|  \\           /  | \n 
-\\  '.       .'  / \n
-'.  \`'---'\`  .' \n
-jgs   '-._____.-'`);
-});
+app.post("/api/articles/:article_id/comments", postComments);
 
 /////////
 
