@@ -33,7 +33,7 @@ app.post("/api/articles/:article_id/comments", postComments);
 
 app.get("/api/face", (req, res, next) => {
   res.status(200).send(`     _.-'''''-._ \n
-.'  _     _  '.\n
+.'  _     _  '.\br
 /   (o)   (o)   \\ \n
 |                 | \n
 |  \\           /  | \n 
