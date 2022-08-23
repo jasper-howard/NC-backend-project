@@ -45,6 +45,7 @@ exports.selectArticles = async (
   order = "DESC",
   topic = "*"
 ) => {
+  let aliasFix = "a.";
   const niceSortBys = [
     "article_id",
     "author",
@@ -70,14 +71,16 @@ exports.selectArticles = async (
     if (topic === "*") {
       where = `WHERE a.topic = ANY (SELECT topic FROM topics)`;
     }
-
+    if (sort_by === "comment_count") {
+      aliasFix = "";
+    }
     const { rows } = await db.query(
       `SELECT CAST(COUNT(c.comment_id)as int) as comment_count,a.body, a.author,a.title,a.article_id, a.topic , a.created_at, a.votes
     FROM articles AS a
     LEFT  JOIN comments as c ON c.article_id = a.article_id
     ${where}
     GROUP BY a.article_id 
-    ORDER BY a.${sort_by} ${order};`
+    ORDER BY ${aliasFix}${sort_by} ${order};`
     );
     return rows;
   }
