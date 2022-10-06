@@ -126,3 +126,15 @@ exports.selectEndpoints = async () => {
     .readFile(`${__dirname}/../endpoints.json`)
     .then((data) => JSON.parse(data));
 };
+
+exports.addUser = async (username, name) => {
+  const { rows } = await db.query(
+    `
+  INSERT INTO users
+  (username, name)
+  VALUES
+  ($1,$2) RETURNING *;`,
+    [username, name]
+  );
+  return rows;
+};

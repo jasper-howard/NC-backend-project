@@ -582,3 +582,44 @@ describe("GET /api", () => {
       });
   });
 });
+
+describe("13. POST /api/users", () => {
+  test("should return status 201", () => {
+    return request(app)
+      .post("/api/users")
+      .send({ username: "mighty_dave", name: "dave" })
+      .expect(201);
+  });
+  test("should return posted user", () => {
+    return request(app)
+      .post("/api/users")
+      .send({ username: "mighty_dave", name: "dave" })
+      .then(({ body: { user } }) => {
+        const expected = {
+          username: "mighty_dave",
+          name: "dave",
+          avatar_url: null,
+        };
+        expect(user).toEqual(expected);
+      });
+  });
+
+  test("should respond with 400 not acceptable when sent malformed body - wrong field ", () => {
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send({ usernam: "butter_bridge", name: "wow" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("should respond with 400 not acceptable when sent malformed body - wrong input type", () => {
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send({ username: "butter_bridge", name: 999 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+});

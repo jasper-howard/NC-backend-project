@@ -34,6 +34,8 @@ app.delete("/api/comments/:comment_id", deleteComment);
 
 app.post("/api/articles/:article_id/comments", postComments);
 
+app.post("/api/users", postUser);
+
 /////////
 
 app.use((err, req, res, next) => {
