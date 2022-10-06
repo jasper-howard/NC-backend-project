@@ -8,6 +8,7 @@ const {
   removeComment,
   addComment,
   selectEndpoints,
+  addUser,
 } = require("../models/models");
 
 exports.getTopics = (req, res, next) => {

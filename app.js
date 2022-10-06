@@ -10,6 +10,7 @@ const {
   deleteComment,
   postComments,
   getEndpoints,
+  postUser,
 } = require("./controllers/controllers");
 
 const app = express();

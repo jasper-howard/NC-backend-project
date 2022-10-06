@@ -478,7 +478,8 @@ describe("GET /api", () => {
               topics: [{ slug: "football", description: "Footie!" }],
             },
           },
-          "/api/users": {
+
+          "GET /api/users": {
             description: "serves an array of all users",
             queries: [],
             exampleResponse: {
@@ -492,6 +493,19 @@ describe("GET /api", () => {
               ],
             },
           },
+          "POST /api/users": {
+            description: "post a user and serves the new user",
+            queries: [],
+            "example body": { username: "butter_bridge", name: "dave" },
+            exampleResponse: {
+              user: {
+                username: "butter_bridge",
+                name: "dave",
+                avatar_url: null,
+              },
+            },
+          },
+
           "GET /api/articles": {
             description: "serves an array of all topics",
             queries: ["topic", "sort_by", "order"],
@@ -573,6 +587,7 @@ describe("GET /api", () => {
               },
             },
           },
+
           "DELETE /api/comments/:comment_id": {
             description: "deletes a comment given comment_id",
             queries: [],

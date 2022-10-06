@@ -6,7 +6,7 @@
 
 ## .env
 
-- .env.test and .env.development files must be made after cloning. set to 'PGDATABASE=nc*news_test' and 'PGDATABASE=nc_news*' respectively
+- .env.test and .env.development files must be made after cloning. set to 'PGDATABASE=nc_news_test' and 'PGDATABASE=nc_news\*' respectively
 
 ## Hosted at
 
