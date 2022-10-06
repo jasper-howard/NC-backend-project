@@ -111,3 +111,19 @@ exports.getEndpoints = (req, res, next) => {
     res.status(200).send({ endpoints: endpoints });
   });
 };
+
+exports.postUser = (req, res, next) => {
+  const { username, name } = req.body;
+  const bodyKeys = Object.keys(req.body);
+  if (bodyKeys.includes("username") && bodyKeys.includes("name")) {
+    addUser(username, name)
+      .then(([user]) => {
+        res.status(201).send({ user: user });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  } else {
+    res.status(400).send({ msg: "bad request" });
+  }
+};
